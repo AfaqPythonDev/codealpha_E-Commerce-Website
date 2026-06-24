@@ -28,6 +28,30 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/analytics', analyticsRoutes);
 
+// Temporary Diagnostic Route for Vercel Paths
+app.get('/api/debug-paths', (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  try {
+    const debugInfo = {
+      cwd: process.cwd(),
+      __dirname: __dirname,
+      filesInCwd: fs.existsSync(process.cwd()) ? fs.readdirSync(process.cwd()) : [],
+      serverExists: fs.existsSync(path.join(process.cwd(), 'server')),
+      serverDataExists: fs.existsSync(path.join(process.cwd(), 'server', 'data')),
+    };
+    if (debugInfo.serverExists) {
+      debugInfo.filesInServer = fs.readdirSync(path.join(process.cwd(), 'server'));
+    }
+    if (debugInfo.serverDataExists) {
+      debugInfo.filesInServerData = fs.readdirSync(path.join(process.cwd(), 'server', 'data'));
+    }
+    return res.json(debugInfo);
+  } catch (err) {
+    return res.status(500).json({ error: err.message, stack: err.stack });
+  }
+});
+
 // Fallback path to serve homepage if someone accesses random routes
 app.get('*', (req, res) => {
   // If request is looking for an API path but it didn't match any route, return 404 JSON
