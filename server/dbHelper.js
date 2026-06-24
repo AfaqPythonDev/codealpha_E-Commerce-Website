@@ -1,6 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
+// Static references to force Vercel Node File Trace to bundle these JSON files
+try {
+  require.resolve('./data/products.json');
+  require.resolve('./data/users.json');
+  require.resolve('./data/orders.json');
+  require.resolve('./data/coupons.json');
+} catch (e) {
+  // Ignored in local environments where paths might resolve differently
+}
+
 // Resolve the data directory dynamically
 let DATA_DIR = path.join(__dirname, 'data');
 
