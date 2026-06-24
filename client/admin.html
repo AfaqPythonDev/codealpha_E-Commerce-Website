@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Control Center | NovaCart</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span>Nova</span>Cart <span style="font-size:0.8rem; background:var(--accent-emerald-glow); color:var(--accent-emerald); padding:0.2rem 0.5rem; border-radius:4px; font-weight:700;">CONTROL</span>
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="admin.html" class="active">Admin Suite</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <div id="auth-nav">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Admin Interface Layout -->
+  <main class="container">
+    <div class="dashboard-layout">
+      
+      <!-- Admin Sidebar Menu navigation -->
+      <nav class="dashboard-sidebar" aria-label="Admin Suite Menu">
+        <ul class="sidebar-menu">
+          <li class="sidebar-item active" id="menu-analytics" onclick="switchAdminTab('analytics')">
+            📊 KPI Analytics
+          </li>
+          <li class="sidebar-item" id="menu-products" onclick="switchAdminTab('products')">
+            📦 Manage Catalog
+          </li>
+          <li class="sidebar-item" id="menu-orders" onclick="switchAdminTab('orders')">
+            📋 Customer Orders
+          </li>
+          <li class="sidebar-item" id="menu-coupons" onclick="switchAdminTab('coupons')">
+            🏷️ Discount Codes
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Admin content area panels -->
+      <section class="dashboard-content">
+        
+        <!-- KPI Dashboard Panel -->
+        <div id="panel-analytics" class="tab-pane active">
+          <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">KPI Store Overview</h2>
+          
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon">💰</div>
+              <div>
+                <div class="kpi-value" id="kpi-revenue">$0.00</div>
+                <div class="kpi-label">Gross Revenue</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon">📋</div>
+              <div>
+                <div class="kpi-value" id="kpi-sales">0</div>
+                <div class="kpi-label">Completed Orders</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon">📦</div>
+              <div>
+                <div class="kpi-value" id="kpi-products">0</div>
+                <div class="kpi-label">Active Items</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon">👥</div>
+              <div>
+                <div class="kpi-value" id="kpi-customers">0</div>
+                <div class="kpi-label">Registered Buyers</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity grid -->
+          <div style="margin-top: 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2.5rem;">
+            
+            <!-- Recent Transactions logs -->
+            <div>
+              <h3 style="font-size: 1.2rem; margin-bottom: 1.2rem; font-family: var(--font-heading);">Recent Shop Activity</h3>
+              <div class="table-container">
+                <table class="data-table" style="font-size: 0.9rem;">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-orders-list">
+                    <tr><td colspan="4" style="color:var(--text-dark); text-align:center;">Loading activity feeds...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Categories breakdown panel -->
+            <div>
+              <h3 style="font-size: 1.2rem; margin-bottom: 1.2rem; font-family: var(--font-heading);">Sales by Division</h3>
+              <div class="table-container">
+                <table class="data-table" style="font-size: 0.9rem;">
+                  <thead>
+                    <tr>
+                      <th>Division</th>
+                      <th style="width: 45%;">Contribution</th>
+                      <th style="text-align: right;">Gross Sales</th>
+                    </tr>
+                  </thead>
+                  <tbody id="kpi-category-sales">
+                    <tr><td colspan="3" style="color:var(--text-dark); text-align:center;">Loading details...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Products Management Panel -->
+        <div id="panel-products" class="tab-pane">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.5rem; font-family: var(--font-heading);">Product Inventory Catalog</h2>
+            <button class="btn btn-primary" onclick="openProductModal(false)" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Add New Product</button>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Thumbnail</th>
+                  <th>Product Title</th>
+                  <th>Category</th>
+                  <th>Pricing</th>
+                  <th>Stock Count</th>
+                  <th style="text-align: center;">Controls</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-tbody">
+                <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 3rem;">Loading catalog rows...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Orders logs management Panel -->
+        <div id="panel-orders" class="tab-pane">
+          <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">Customer Orders Ledger</h2>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Purchaser Name</th>
+                  <th>Date Placed</th>
+                  <th>Total Cost</th>
+                  <th>Status Progress</th>
+                  <th style="text-align: center;">Update Status</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-tbody">
+                <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 3rem;">Loading orders ledger...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Coupons Code management Panel -->
+        <div id="panel-coupons" class="tab-pane">
+          <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem;">
+            
+            <!-- Left: existing coupons -->
+            <div>
+              <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">Promo Discount Keys</h2>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Key Code</th>
+                      <th>Details</th>
+                      <th>Min Spend</th>
+                      <th style="text-align: center;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-coupons-tbody">
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading coupon codes...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Right: Add Coupon form -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; height: fit-content;">
+              <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">Generate New Promo Code</h3>
+              
+              <form id="add-coupon-form" style="display: flex; flex-direction: column; gap: 1.2rem;">
+                <div class="form-group">
+                  <label for="coupon-input-code">Coupon Key Code</label>
+                  <input type="text" id="coupon-input-code" class="form-input" placeholder="e.g. SUMMER30" required>
+                </div>
+                <div class="form-group">
+                  <label for="coupon-input-type">Discount reduction type</label>
+                  <select id="coupon-input-type" class="form-input" style="background: var(--bg-secondary);">
+                    <option value="percentage">Percentage Discount (%)</option>
+                    <option value="fixed">Fixed Price Deduction ($)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="coupon-input-value">Reduction value</label>
+                  <input type="number" id="coupon-input-value" class="form-input" placeholder="e.g. 20" min="1" step="any" required>
+                </div>
+                <div class="form-group">
+                  <label for="coupon-input-min">Minimum purchase limit ($)</label>
+                  <input type="number" id="coupon-input-min" class="form-input" placeholder="0" min="0" step="any">
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">Save Coupon Key</button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Create/Edit Product Dialog Overlay -->
+  <div class="modal-overlay" id="product-crud-modal">
+    <div class="modal-wrapper" style="max-width: 650px;">
+      <span class="modal-close" onclick="closeProductModal()">&times;</span>
+      <h2 class="modal-title" id="product-modal-title" style="font-family: var(--font-heading);">Add New Product</h2>
+      
+      <form id="product-crud-form" style="max-height: 480px; overflow-y: auto; padding-right: 0.5rem; display: flex; flex-direction: column; gap: 1.2rem;">
+        <input type="hidden" id="crud-product-id">
+        
+        <div class="form-group">
+          <label for="crud-name">Product Title</label>
+          <input type="text" id="crud-name" class="form-input" placeholder="e.g. Waterproof Ripstop Shell Jacket" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="crud-price">Pricing ($)</label>
+            <input type="number" id="crud-price" class="form-input" placeholder="0.00" min="0.01" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label for="crud-stock">Stock Count</label>
+            <input type="number" id="crud-stock" class="form-input" placeholder="0" min="0" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="crud-category">Category Division</label>
+            <select id="crud-category" class="form-input" style="background: var(--bg-secondary);" required>
+              <option value="Electronics">Electronics</option>
+              <option value="Audio">Audio</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Home">Home & Living</option>
+              <option value="Beauty">Beauty & Personal Care</option>
+              <option value="Fitness">Sports & Fitness</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="crud-isfeatured">Highlight options</label>
+            <label class="filter-checkbox-item" style="border: 1px solid var(--border-color); padding: 0.72rem 1rem; border-radius: var(--radius-md); background: var(--bg-secondary);">
+              <input type="checkbox" id="crud-isfeatured" style="width:16px; height:16px; accent-color:var(--accent-emerald);"> Trending
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="crud-variants">Product Options / Sizing Variants (comma-separated)</label>
+          <input type="text" id="crud-variants" class="form-input" placeholder="e.g. S, M, L, XL or Charcoal, White, Emerald">
+        </div>
+
+        <div class="form-group">
+          <label for="crud-image">Primary Unsplash / Image URL</label>
+          <input type="url" id="crud-image" class="form-input" placeholder="https://images.unsplash.com/..." required>
+        </div>
+
+        <div class="form-group">
+          <label for="crud-desc">Product Description</label>
+          <textarea id="crud-desc" class="form-input" rows="3" placeholder="Describe the item specifications and details..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem;" id="crud-submit-btn">Save Product</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-bottom">
+      <div>&copy; 2026 NovaCart Control. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

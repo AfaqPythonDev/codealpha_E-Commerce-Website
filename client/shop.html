@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse NovaCart's exclusive collections across Fashion, Home, Beauty, Fitness, and Electronics. Filter by pricing, stars, and stocks.">
+  <title>Catalog | NovaCart Department Store</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span>Nova</span>Cart
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html" class="active">Shop</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="dashboard.html?tab=wishlist" class="nav-btn" aria-label="View Wishlist" id="wishlist-nav-link">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+          <span class="badge" id="wishlist-badge" style="display: none;">0</span>
+        </a>
+        
+        <a href="cart.html" class="nav-btn" aria-label="View Shopping Cart">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          <span class="badge" id="cart-badge" style="display: none;">0</span>
+        </a>
+        <div id="auth-nav">
+          <a href="auth.html" class="auth-nav-link">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Shop Catalog Layout -->
+  <main class="container">
+    <div class="shop-layout">
+      
+      <!-- Filter Sidebar -->
+      <aside class="filter-sidebar" aria-label="Catalog Filters">
+        <div class="filter-group">
+          <h3 class="filter-group-title">Search</h3>
+          <div style="position: relative;">
+            <input type="text" id="search-input" class="form-input btn-block" placeholder="Search gear..." aria-label="Search gear" autocomplete="off">
+            <div class="search-suggestions" id="search-suggestions"></div>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3 class="filter-group-title">Categories</h3>
+          <div class="filter-checkbox-list" id="category-filters">
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Electronics" class="category-checkbox"> Electronics
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Audio" class="category-checkbox"> Audio & Sound
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Kitchen" class="category-checkbox"> Kitchen & Dining
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Fashion" class="category-checkbox"> Fashion & Wear
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Home" class="category-checkbox"> Home & Living
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Beauty" class="category-checkbox"> Beauty & Personal
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Fitness" class="category-checkbox"> Sports & Fitness
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Gaming" class="category-checkbox"> Gaming Gear
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="checkbox" value="Office" class="category-checkbox"> Office & Workspace
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3 class="filter-group-title">Customer Rating</h3>
+          <div class="filter-checkbox-list">
+            <div class="rating-filter-item" onclick="selectRatingFilter(4)">
+              <span class="rating-filter-stars">⭐⭐⭐⭐☆</span> & above (4★)
+            </div>
+            <div class="rating-filter-item" onclick="selectRatingFilter(3)">
+              <span class="rating-filter-stars">⭐⭐⭐☆☆</span> & above (3★)
+            </div>
+            <div class="rating-filter-item" onclick="selectRatingFilter(2)">
+              <span class="rating-filter-stars">⭐⭐☆☆☆</span> & above (2★)
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3 class="filter-group-title">Availability</h3>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <input type="checkbox" id="filter-out-of-stock"> Hide Out of Stock
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3 class="filter-group-title">Price Range</h3>
+          <div class="price-slider-group">
+            <div class="price-range-inputs">
+              <input type="number" id="price-min" class="form-input" placeholder="Min" min="0" value="0" aria-label="Minimum Price">
+              <span style="color: var(--text-dark);">—</span>
+              <input type="number" id="price-max" class="form-input" placeholder="Max" min="0" value="500" aria-label="Maximum Price">
+            </div>
+            <button id="apply-price-btn" class="btn btn-secondary btn-block" style="padding: 0.5rem; font-size: 0.85rem; border-radius: var(--radius-sm);">Apply Price</button>
+          </div>
+        </div>
+
+        <button id="reset-filters" class="btn btn-secondary btn-block">Reset All Filters</button>
+      </aside>
+
+      <!-- Main Catalog Display -->
+      <section style="display: flex; flex-direction: column; gap: 1.5rem;">
+        
+        <!-- Sorter and count details -->
+        <div class="catalog-header">
+          <div style="color: var(--text-muted); font-size: 0.95rem;" id="results-count">Showing 0 products</div>
+          <div class="catalog-sort">
+            <label for="sort-select">Sort By:</label>
+            <select id="sort-select">
+              <option value="popular">Popular Highlights</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Top Customer Rated</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Products Card Grid -->
+        <div class="product-grid animate-fade-in" id="shop-products-grid">
+          <!-- Dynamically populated -->
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-bottom">
+      <div>&copy; 2026 NovaCart Inc. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/shop.js"></script>
+</body>
+</html>

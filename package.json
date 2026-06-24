@@ -1,0 +1,19 @@
+{
+  "name": "novacart-ecommerce",
+  "version": "1.0.0",
+  "description": "Professional E-Commerce Website with Emerald & Black Theme and Integrated Admin Panel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0"
+  },
+  "author": "Antigravity AI",
+  "license": "MIT"
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View detailed product specifications, photos, and verified customer reviews on NovaCart. Buy with confidence and fast shipping.">
+  <title>Product Details | NovaCart</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span>Nova</span>Cart
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html" class="active">Shop</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="dashboard.html?tab=wishlist" class="nav-btn" aria-label="View Wishlist" id="wishlist-nav-link">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+          <span class="badge" id="wishlist-badge" style="display: none;">0</span>
+        </a>
+        
+        <a href="cart.html" class="nav-btn" aria-label="View Shopping Cart">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          <span class="badge" id="cart-badge" style="display: none;">0</span>
+        </a>
+        <div id="auth-nav">
+          <a href="auth.html" class="auth-nav-link">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Product Details Layout -->
+  <main class="container" style="padding-top: 3rem;">
+    <!-- Back Navigation link -->
+    <div style="margin-bottom: 2rem;">
+      <a href="shop.html" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Back to Catalog
+      </a>
+    </div>
+
+    <!-- Details Container -->
+    <div class="product-details" id="product-details-container">
+      <!-- Loading indicator while JS fetches database details -->
+      <div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 4rem;">Loading product details...</div>
+    </div>
+
+    <!-- Specifications, Features & Reviews Tabs section -->
+    <section class="specs-tabs">
+      <div class="tab-headers">
+        <div class="tab-header active" onclick="switchDetailsTab('specs')">Specifications</div>
+        <div class="tab-header" id="reviews-tab-header" onclick="switchDetailsTab('reviews')">Customer Reviews (0)</div>
+      </div>
+
+      <!-- Specifications Panel -->
+      <div class="tab-pane active" id="pane-specs">
+        <table class="specs-table" id="specs-table">
+          <!-- Populated dynamically -->
+          <tr><td style="color: var(--text-dark); text-align: center;">No specifications detailed for this product.</td></tr>
+        </table>
+      </div>
+
+      <!-- Reviews list and submission Form Panel -->
+      <div class="tab-pane" id="pane-reviews">
+        <div class="reviews-section" id="reviews-list">
+          <!-- Reviews list populated dynamically -->
+          <div style="color: var(--text-muted);">No reviews written for this product yet. Be the first to review!</div>
+        </div>
+
+        <!-- Add Review Form -->
+        <div class="review-form" id="review-submit-section" style="margin-top: 3rem;">
+          <h3 style="margin-bottom: 1.5rem; font-family: var(--font-heading);">Submit a Review</h3>
+          <div id="review-auth-prompt" style="display: none; color: var(--text-muted);">
+            Please <a href="auth.html" class="emerald-link" style="text-decoration: underline;">Sign In</a> to write a customer review.
+          </div>
+          <form id="product-review-form">
+            <div class="form-group">
+              <label for="review-rating">Rating (1 to 5 Stars)</label>
+              <select id="review-rating" class="form-input" style="width: 150px; background: var(--bg-secondary);" required>
+                <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                <option value="4">⭐⭐⭐⭐ (4)</option>
+                <option value="3">⭐⭐⭐ (3)</option>
+                <option value="2">⭐⭐ (2)</option>
+                <option value="1">⭐ (1)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="review-comment">Review Description</label>
+              <textarea id="review-comment" class="form-input" rows="4" placeholder="Share your experience with this item..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related products widget container -->
+    <section class="container" style="padding-left: 0; padding-right: 0; margin-top: 4rem; border-top: 1px solid var(--border-color); padding-top: 4rem;" aria-label="Related items">
+      <h2 style="font-size: 1.8rem; margin-bottom: 2rem; font-family: var(--font-heading);">Related Essentials</h2>
+      <div class="product-grid" id="related-products-grid">
+        <!-- Related items loaded dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-bottom">
+      <div>&copy; 2026 NovaCart Inc. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/product.js"></script>
+</body>
+</html>
