@@ -1,7 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 
-const DATA_DIR = path.join(__dirname, 'data');
+// Resolve the data directory dynamically
+let DATA_DIR = path.join(__dirname, 'data');
+
+// Fallback search for Vercel/bundling environments where __dirname might be flattened
+if (!fs.existsSync(path.join(DATA_DIR, 'products.json'))) {
+  const potentialPaths = [
+    path.join(process.cwd(), 'server', 'data'),
+    path.join(process.cwd(), 'data'),
+    path.join(__dirname, '..', 'server', 'data'),
+    path.join(__dirname, '..', 'data')
+  ];
+  for (const p of potentialPaths) {
+    if (fs.existsSync(path.join(p, 'products.json'))) {
+      DATA_DIR = p;
+      break;
+    }
+  }
+}
 
 function getFilePath(fileName) {
   return path.join(DATA_DIR, fileName);
